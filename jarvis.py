@@ -1,17 +1,19 @@
+# from nturl2path import url2pathname
 import os
-# ai desktop browser assistnave
 import random
+from winsound import PlaySound
 
 import pyttsx3
 from datetime import *
-import  speech_recognition  as apiai
+import speech_recognition as sr
 import webbrowser
 import wikipedia
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
-engine.setProperty('rate', 150)
+engine.setProperty('rate', 120)
+
 
 def speak(audio):
     engine.say(audio)
@@ -21,17 +23,16 @@ def speak(audio):
 def wishme():
     hour = int(datetime.now().hour)
     if hour >= 0 and hour < 12:
-        speak("Good Morning sir!")
+        speak("Good Morning!")
     elif hour >= 12 and hour < 18:
-        speak("Good Afternoon Sir!")
+        speak("Good Afternoon!")
     else:
-        speak("Good evening Sir!")
-    speak("I'm Raone,How may i help you sir?")
-
+        speak("Good evening!")
+    speak("I'm x ,How may i help you")
 
 def takeCommand():
-    r = apiai.Recognizer()
-    with apiai.Microphone as source:
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
         print("Listening...")
         r.pause_threshold = 1
         audio = r.listen(source)
@@ -42,16 +43,25 @@ def takeCommand():
         print(f"User Said:{query}\n")
     except Exception as e:
         print("Sorry! please say that again")
-        return None
+        return "None"
     return query
 
 
 if __name__ == '__main__':
+    engine = pyttsx3.init('sapi5')
+    voices = engine.getProperty('voices')
+    for voice in voices: 
+        print("Voice:") 
+        print("ID: %s" %voice.id) 
+        print("Name: %s" %voice.name) 
+        print("Age: %s" %voice.age) 
+        print("Gender: %s" %voice.gender) 
+        print("Languages Known: %s" %voice.languages)
     wishme()
     while True:
-        query = takeCommand().lower
-        # query = takeCommand().lower()
-       
+        query = takeCommand().lower()
+        print(query)
+
         if 'wikipedia' in query:
             speak("seraching on  Wikipedia")
             query = query.replace("wikipedia", "")
@@ -60,7 +70,11 @@ if __name__ == '__main__':
             print(result)
             speak(result)
         elif 'youtube' in query:
-            webbrowser.open("youtube.com")
+        #    while True:
+            webbrowser.open("www.youtube.com")
+            # PlaySound('')
+            # webbrowser.open("https://www.youtube.com/song")
+            # webbrowser.open("https://www.youtube.com/song")
         elif 'google' in query:
             webbrowser.open("Google.com")
         elif 'facebook' in query:
@@ -70,7 +84,7 @@ if __name__ == '__main__':
         elif 'twitter' in query:
             webbrowser.open("twitter.com")
         elif 'play music' in query:
-            music_dir = 'C:\\Users\\DEEPAK\\Music\\download'
+            music_dir = 'C:\\Users\\DeLL\\Desktop\\songs1'
             songs = os.listdir(music_dir)
             print(songs)
             os.startfile(os.path.join(music_dir, random.choice(songs)))
@@ -78,4 +92,3 @@ if __name__ == '__main__':
             strtime = datetime.now().strftime("%H:%M:%S")
             print(strtime)
             speak(f"Sir, The time is {strtime}")
-
